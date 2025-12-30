@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from mangum import Mangum
 from bedrock_lib import invoke_claude, save_chat, ChatRequest, ChatResponse
 
 app = FastAPI(title="Bedrock Chat API")
@@ -11,3 +12,5 @@ def chat(request: ChatRequest):
     reply = invoke_claude(request.message)
     save_chat(request.message, reply)
     return ChatResponse(reply=reply)
+
+handler = Mangum(app)

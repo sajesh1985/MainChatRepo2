@@ -1,7 +1,9 @@
 FROM public.ecr.aws/lambda/python:3.11
 
-WORKDIR /app
+# Lambda requires /var/task
+WORKDIR /var/task
 
+# Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -12,5 +14,5 @@ RUN pip install ./bedrock_lib
 # Copy FastAPI app
 COPY app ./app
 
-EXPOSE 8000
+# Lambda handler (NO uvicorn, NO expose)
 CMD ["app.main.handler"]
